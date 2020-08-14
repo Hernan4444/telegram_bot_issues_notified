@@ -15,8 +15,8 @@ session = Session()
 # Usuario y contraseña de github
 session.auth = (os.environ['USER'], os.environ['PASSWORD'])
 
-organization = os.environ['organization']
-repo = os.environ['repo']
+organization = os.environ['ORGANIZATION']
+repo = os.environ['REPO']
 
 LINK = "https://api.github.com/repos/{}/{}/issues".format(organization, repo)
 

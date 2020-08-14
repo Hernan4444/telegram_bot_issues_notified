@@ -42,23 +42,27 @@ def telegram_bot():
     try:
         data = json.loads(flask.request.data)
         print(data)
+        if "message" in data and str(data["message"]["text"]).lower().strip() == "/start":
+            id_ = str(data["message"]["chat"]["id"])
+            send_message("Hola, nuestro ID de chat es {}".format(id_), ID_PERSONAL)
+            return "202"
+
         if 'new_chat_members' in data['message'] and 'new_chat_member' in data[
                 'message'] and 'new_chat_participant' in data['message']:
             if data['message']['new_chat_member']['username'] != 'Hernybot':
                 return "202"
-            id_ = str(json.loads(flask.request.data)["message"]["chat"]["id"])
+            id_ = str(data["message"]["chat"]["id"])
             chat = str(data['message']['chat']['title'])
             send_message(
                 "HernyBot ha sido incluido al grupo {} con id {}".format(
                     chat, id_), ID_PERSONAL)
             return "202"
 
-        if "edited_message" not in json.loads(flask.request.data):
+        if "edited_message" not in data:
 
-            text = str(json.loads(flask.request.data)["message"]["text"])
-            user = json.loads(
-                flask.request.data)["message"]["from"]["username"]
-            id_ = str(json.loads(flask.request.data)["message"]["chat"]["id"])
+            text = str(data["message"]["text"])
+            user = data["message"]["from"]["username"]
+            id_ = str(data["message"]["chat"]["id"])
 
             if text.lower().startswith("/"):
 
@@ -66,7 +70,7 @@ def telegram_bot():
                     random(text, id_)
 
                 elif text.lower().startswith("/github"):
-                    if user != MY_USER or id_ != ID_COURSE:
+                    if user != MY_USER and id_ not in  [ID_PERSONAL, ID_COURSE]:
                         text = f"Hola {user}. Lamento informar que no tienes autorización para ejecutar este comando"
                         send_message(text, id_)
                         return "202"
@@ -86,7 +90,7 @@ def telegram_bot():
                                 number, LINK, number)
 
                         print(text)
-                        send_message(text, ID_COURSE, True)
+                        send_message(text, id_, True)
 
                     thread = threading.Thread(target=vew_detail_github,
                                               args=(teacher_assistant, ),
@@ -106,6 +110,10 @@ def telegram_bot():
 def github_bot_avanzada():
     try:
         data = flask.request.get_json()
+        if "zen" in data:
+            send_message("HernyBot ha sido incluido a un webhook de Github", ID_PERSONAL)
+            return "202"
+
         type_event = data["action"]
         print(type_event)
 

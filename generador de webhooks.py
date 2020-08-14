@@ -9,6 +9,6 @@ load_dotenv(dotenv_path=env_path)
 # Token del bot y link de la página de heroku que tiene el código
 TOKEN = os.environ['TOKEN']
 
-destination = os.environ['destination']
+destination = os.environ['DESTINATION']
 print(requests.post('https://api.telegram.org/bot{}/setWebhook'.format(TOKEN), data={'url':destination}))
 
