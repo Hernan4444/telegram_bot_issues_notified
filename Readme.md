@@ -19,4 +19,15 @@ Variables de entorno:
 * `DESTINATION`: URL para conectar el webhook del bot con algún endpoint de la api en Flask.
 * `FLASK_APP`: En caso de ejecutar en Heroku, esta variable debe indicar cual es el archivo a ejecutar de flask. Por defecto debe ser `main.py`
 * `USER`: Nombre del usuario de github para poder no tener un límite de request tan bajo al momento de ejecutar el comando `\github`
-* `PASSWORD`: Contraseña del usuario de github
+* `PASSWORD`: Token personal del usuario de github
+
+
+## Sugerencias de como hacer funcionar todo
+
+1. Setear webhook con el **generador de webhooks.py**.
+2. Subir código al servidor y definir `ID_COURSE` e `ID_PERSONAL` con cualquier valor.
+3. Hablar con tu bot (`/start`) para que te diga el `ID_PERSONAL`.
+4. Actualizar variables de entorno con el valor de `ID_PERSONAL`.
+5. Incluir al bot a tu grupo de telegram. El bot te indicará por interno el `ID_COURSE`
+6. Actualizar variables de entorno con el valor de `ID_COURSE`.
+6. Setear webhook de github con el servidor.
